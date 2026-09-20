@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chess for My Mary — حسابات وأصدقاء ولعب أونلاين</title>
+<meta name="description" content="Chess for My Mary: العب شطرنج أونلاين بحساب جوجل، أضف أصدقاءك وادعُهم لمباراة لحظية، أو العب ضد الحاسوب بثلاث مستويات. قواعد كاملة بدون تساهل.">
+<meta name="theme-color" content="#170f21">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23170f21'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23d8b26a'%3E%E2%99%9B%3C/text%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chess for My Mary">
+<meta property="og:description" content="شطرنج أونلاين بحساب جوجل، أصدقاء، ومباريات لحظية — أو ضد الحاسوب.">
+<meta property="og:locale" content="ar_EG">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===================== 1) التوكنز ===================== */
+:root{
+  --ink:#170f21; --ink-2:#22162f; --ink-3:#2f2040;
+  --ivory:#f3e7da; --mulberry:#7b4a62; --gold:#d8b26a; --mint:#6fd3b0; --rose:#e0708a; --muted:#b9a8c4;
+  --r-s:8px; --r-m:14px; --r-l:26px;
+  --shadow:0 18px 40px rgba(0,0,0,.45);
+  --maxw:1180px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(78px + env(safe-area-inset-top,0px))}
+body{
+  margin:0;background:
+    radial-gradient(900px 500px at 85% -10%, rgba(216,178,106,.16), transparent 60%),
+    radial-gradient(700px 500px at 5% 10%, rgba(123,74,98,.25), transparent 60%),
+    var(--ink);
+  color:var(--ivory);font-family:"Tajawal",system-ui,"Segoe UI",Arial,sans-serif;
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+h1,h2,h3{font-family:"Amiri",Georgia,"Times New Roman",serif;line-height:1.3;margin:0 0 .5rem;font-weight:700}
+h1{font-size:clamp(2rem,5.5vw,3.6rem)}
+h2{font-size:clamp(1.5rem,3.6vw,2.4rem)}
+p{margin:0 0 1rem;max-width:68ch}
+a{color:inherit;text-decoration:none}
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:clamp(16px,4vw,32px)}
+section{padding-block:clamp(48px,7vw,86px)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===================== 2) الهيدر ===================== */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:rgba(23,15,33,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--ink-3)}
+.head-in{display:flex;align-items:center;gap:16px;min-height:74px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Amiri",serif;font-size:1.25rem;font-weight:700}
+.logo .mark{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,var(--gold),#a9793c);color:#20140a;font-size:1.5rem}
+.logo small{display:block;font-family:"Tajawal",sans-serif;font-size:.68rem;color:var(--muted);font-weight:400;line-height:1}
+.nav{margin-inline-start:auto;display:flex;align-items:center;gap:6px}
+.nav a{padding:8px 12px;border-radius:var(--r-s);color:var(--muted);transition:color .2s,background .2s}
+.nav a:hover{color:var(--ivory);background:rgba(255,255,255,.06)}
+.head-user{display:none;align-items:center;gap:8px;font-size:.85rem}
+.head-user img{width:32px;height:32px;border-radius:50%;border:1px solid var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:999px;border:1px solid transparent;cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:700;transition:transform .15s,background .2s,border-color .2s}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-gold{background:linear-gradient(145deg,var(--gold),#b98f47);color:#20140a}
+.btn-ghost{background:transparent;border-color:var(--ink-3);color:var(--ivory)}
+.btn-ghost:hover{border-color:var(--gold)}
+.btn-sm{padding:8px 14px;font-size:.85rem}
+.btn-google{background:#fff;color:#1f1f1f;border:1px solid #dadce0}
+.btn-google svg{width:18px;height:18px}
+.burger{display:none;background:none;border:1px solid var(--ink-3);border-radius:10px;padding:8px 10px;color:var(--ivory);cursor:pointer}
+.burger span{display:block;width:20px;height:2px;background:currentColor;margin:4px 0}
+@media(max-width:980px){
+  .burger{display:block;margin-inline-start:auto}
+  .nav{position:absolute;inset-inline:0;top:100%;flex-direction:column;align-items:stretch;gap:2px;background:var(--ink-2);border-bottom:1px solid var(--ink-3);padding:12px;margin:0;display:none}
+  .nav.open{display:flex}
+  .nav a{padding:12px}
+  .nav .btn{margin-top:6px}
+}
+
+/* ===================== 3) الهيرو ===================== */
+.hero{padding-block:clamp(40px,7vw,80px) clamp(30px,5vw,60px)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,56px);align-items:center}
+.hero p.lead{font-size:1.06rem;color:var(--muted)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;padding-top:22px;border-top:1px solid var(--ink-3)}
+.fact b{display:block;font-family:"Amiri",serif;font-size:1.5rem;color:var(--gold)}
+.fact span{font-size:.85rem;color:var(--muted)}
+.hero-art{aspect-ratio:1/1;border-radius:var(--r-l);padding:18px;background:var(--ink-2);border:1px solid var(--ink-3);box-shadow:var(--shadow);display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);overflow:hidden;direction:ltr}
+.hero-art i{background:var(--ivory);display:grid;place-items:center;font-style:normal;font-size:clamp(14px,3.2vw,30px)}
+.hero-art i.d{background:var(--mulberry)}
+.hero-art i.w-p{color:#fffaf2;text-shadow:0 1px 0 #6b4a2d,0 0 2px #3a2718}
+.hero-art i.b-p{color:#231325;text-shadow:0 1px 0 rgba(255,255,255,.25)}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr}.hero-art{max-width:420px;margin-inline:auto;order:-1}}
+
+/* ===================== 4) اللعبة — تخطيط ثابت ===================== */
+.game{background:linear-gradient(180deg,transparent,rgba(47,32,64,.35),transparent)}
+.game-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.65fr);gap:clamp(18px,3vw,34px);align-items:start}
+.board-card{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-l);padding:clamp(12px,2.2vw,20px);box-shadow:var(--shadow)}
+.status-bar{display:flex;align-items:center;gap:10px;height:40px;overflow:hidden;white-space:nowrap;margin-bottom:10px}
+.turn-dot{width:14px;height:14px;border-radius:50%;background:#fffaf2;border:2px solid #6b4a2d;flex:none}
+.turn-dot.b{background:#2a1a2e;border-color:#efe0cf}
+#statusText{font-weight:700;overflow:hidden;text-overflow:ellipsis}
+.tag{margin-inline-start:auto;font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.05);padding:3px 10px;border-radius:999px;flex:none}
+.captured{height:34px;overflow:hidden;display:flex;align-items:center;gap:2px;font-size:20px;direction:ltr;line-height:1}
+.captured .s{color:#e8dccb;text-shadow:0 1px 0 #000}
+.captured .score{font-family:"Tajawal";font-size:.82rem;color:var(--gold);font-weight:700;margin-inline-start:8px}
+.material-bar{height:10px;border-radius:999px;background:#2a1a2e;overflow:hidden;display:flex;margin:8px 0}
+.material-bar i{display:block;height:100%;transition:width .25s}
+.material-bar i.w{background:linear-gradient(90deg,#fff6e8,#e8d3b5)}
+.material-bar i.b{background:linear-gradient(90deg,#4a3350,#241429)}
+.board-shell{direction:ltr;width:100%;max-width:620px;margin-inline:auto;container-type:inline-size;container-name:board}
+.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1/1;width:100%;border-radius:var(--r-m);overflow:hidden;border:3px solid #3b2740;touch-action:manipulation;contain:layout paint style;box-sizing:border-box}
+.sq{position:relative;display:grid;place-items:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;overflow:hidden;aspect-ratio:1/1;box-sizing:border-box}
+.sq.light{background:var(--ivory)}
+.sq.dark{background:var(--mulberry)}
+/* حجم القطعة محسوب من عرض الرقعة نفسها (container query)، وليس من الـ viewport،
+   فلا يتغير حجم المربع مطلقًا بسبب اختيار قطعة أو ظهور hint أو تبديل شريط العنوان في الموبايل */
+.sq .pc{font-size:clamp(24px,12.2cqi,50px);line-height:1;pointer-events:none}
+@supports not (container-type: inline-size){
+  .sq .pc{font-size:clamp(24px,6.8vw,50px)}
+}
+.sq .pc.w{color:#fffdf8;text-shadow:0 0 1px #5d3f24,0 1px 0 #5d3f24,1px 0 0 #5d3f24,-1px 0 0 #5d3f24,0 -1px 0 #5d3f24,0 3px 4px rgba(0,0,0,.35)}
+.sq .pc.b{color:#1d1020;text-shadow:0 0 1px #f6ecdf,0 1px 0 #f6ecdf,1px 0 0 #f6ecdf,-1px 0 0 #f6ecdf,0 -1px 0 #f6ecdf,0 3px 4px rgba(0,0,0,.35)}
+.sq.sel{box-shadow:inset 0 0 0 4px var(--gold)}
+.sq.last{box-shadow:inset 0 0 0 4px rgba(216,178,106,.45)}
+.sq.check{background:var(--rose)}
+.sq .hint{position:absolute;display:none;width:30%;height:30%;border-radius:50%;background:rgba(111,211,176,.85);pointer-events:none}
+.sq.can .hint{display:block}
+.sq.can.cap .hint{width:86%;height:86%;background:transparent;border:5px solid rgba(111,211,176,.9)}
+.sq .coord{position:absolute;font-size:9px;opacity:.55;pointer-events:none;font-weight:700;font-style:normal}
+.sq .coord.f{bottom:2px;right:3px}
+.sq .coord.r{top:2px;left:3px}
+.sq.light .coord{color:#6b4a62}
+.sq.dark .coord{color:#f3e7da}
+.board.locked{pointer-events:none}
+.board-shell{touch-action:manipulation}
+.conn-banner{display:none;text-align:center;font-size:.82rem;color:var(--gold);background:#2a1c38;border:1px solid var(--ink-3);border-radius:var(--r-s);padding:6px 10px;margin-bottom:8px}
+.conn-banner.show{display:block}
+
+.panel{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-m);padding:16px;margin-bottom:16px}
+.panel h3{font-size:1.05rem;margin-bottom:10px;color:var(--gold)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:5px}
+select,input[type=text],input[type=email]{width:100%;padding:10px 12px;border-radius:var(--r-s);border:1px solid var(--ink-3);background:#1b1127;color:var(--ivory);font-family:inherit;font-size:.92rem}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.controls .btn{width:100%}
+.moves{height:200px;overflow:auto;direction:ltr;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+.moves ol{margin:0;padding-inline-start:26px}
+.moves li{padding:2px 0;color:var(--muted)}
+.moves li span{color:var(--ivory);margin-inline-end:10px;display:inline-block;min-width:62px}
+@media(max-width:980px){.game-grid{grid-template-columns:1fr}}
+
+/* ===================== 5) الحساب والأصدقاء ===================== */
+.acct{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.acct img{width:58px;height:58px;border-radius:50%;border:2px solid var(--gold);flex:none;object-fit:cover}
+.acct .who{min-width:0}
+.acct .who b{display:block;font-size:1.02rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acct .who span{color:var(--muted);font-size:.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.stats div{background:#1b1127;border:1px solid var(--ink-3);border-radius:var(--r-s);padding:8px;text-align:center}
+.stats b{display:block;font-family:"Amiri",serif;font-size:1.35rem;color:var(--gold)}
+.stats span{font-size:.76rem;color:var(--muted)}
+.code-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.code-chip{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:3px;font-size:1.05rem;background:#1b1127;border:1px dashed var(--gold);padding:5px 14px;border-radius:var(--r-s);color:var(--gold)}
+.list{list-style:none;padding:0;margin:0}
+.list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--ink-3)}
+.list li:last-child{border-bottom:none}
+.list img{width:36px;height:36px;border-radius:50%;flex:none;object-fit:cover}
+.list .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.93rem}
+.list .nm small{display:block;color:var(--muted);font-size:.75rem}
+.dot{width:9px;height:9px;border-radius:50%;background:#7a6a86;flex:none}
+.dot.on{background:var(--mint);box-shadow:0 0 8px var(--mint)}
+.empty{color:var(--muted);font-size:.87rem;margin:6px 0 0}
+.add-row{display:flex;gap:8px}
+.add-row input{flex:1}
+.notice{background:#2a1c38;border:1px solid var(--gold);border-radius:var(--r-s);padding:12px;font-size:.88rem;color:var(--ivory);margin-bottom:12px}
+.notice code{background:#120b1a;padding:1px 5px;border-radius:4px;font-size:.82rem;direction:ltr;display:inline-block}
+details{background:#1b1127;border:1px solid var(--ink-3);border-radius:var(--r-s);padding:10px 14px;margin-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--gold)}
+details ol{padding-inline-start:20px;color:var(--muted);font-size:.9rem}
+pre{direction:ltr;background:#120b1a;border:1px solid var(--ink-3);border-radius:var(--r-s);padding:10px;overflow:auto;font-size:.74rem;line-height:1.5}
+
+/* ===================== 6) الميزات والفوتر ===================== */
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:26px}
+.feat article{border-inline-start:3px solid var(--gold);padding:4px 16px}
+.feat h3{font-size:1.05rem}
+.feat p{color:var(--muted);font-size:.93rem;margin:0}
+.site-foot{background:#120b1a;border-top:1px solid var(--ink-3);padding-block:44px 22px;margin-top:20px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;gap:26px}
+.foot-grid h4{font-family:"Amiri",serif;color:var(--gold);margin:0 0 10px;font-size:1.05rem}
+.foot-grid ul{list-style:none;margin:0;padding:0}
+.foot-grid li{margin-bottom:7px;color:var(--muted);font-size:.92rem}
+.foot-grid a:hover{color:var(--gold)}
+.copy{margin-top:28px;padding-top:16px;border-top:1px solid var(--ink-3);color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(max-width:820px){.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.foot-grid{grid-template-columns:1fr}}
+
+/* ===================== 7) واتساب وشات بوت ونوافذ ===================== */
+.wa{position:fixed;inset-inline-start:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:70;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#25d366;box-shadow:0 10px 24px rgba(37,211,102,.4);color:#06381a}
+.wa svg{width:30px;height:30px}
+.chat-fab{position:fixed;inset-inline-end:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:70;width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(145deg,var(--gold),#a9793c);color:#20140a;font-size:26px;box-shadow:var(--shadow)}
+.chat-box{position:fixed;inset-inline-end:18px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:71;width:min(340px,calc(100vw - 36px));max-height:min(520px,70vh);display:none;flex-direction:column;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-m);overflow:hidden;box-shadow:var(--shadow)}
+.chat-box.open{display:flex}
+.chat-head{background:#1b1127;padding:12px 14px;border-bottom:1px solid var(--ink-3);display:flex;align-items:center;gap:10px}
+.chat-head b{font-size:.95rem}
+.chat-head small{color:var(--mint);font-size:.72rem;display:block}
+.chat-body{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.msg{padding:9px 13px;border-radius:14px;font-size:.9rem;max-width:85%;line-height:1.6}
+.msg.bot{background:#2a1c38;border-end-start-radius:4px;align-self:flex-start}
+.msg.me{background:linear-gradient(145deg,var(--gold),#b98f47);color:#20140a;border-end-end-radius:4px;align-self:flex-end;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+.chips button{background:transparent;border:1px solid var(--ink-3);color:var(--muted);border-radius:999px;padding:5px 11px;font-size:.78rem;cursor:pointer;font-family:inherit}
+.chips button:hover{border-color:var(--gold);color:var(--ivory)}
+.chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--ink-3)}
+.chat-form input{flex:1}
+.chat-form button{background:var(--gold);border:none;border-radius:var(--r-s);width:44px;cursor:pointer;color:#20140a;font-size:18px}
+.modal{position:fixed;inset:0;z-index:90;background:rgba(10,6,15,.78);display:none;place-items:center;padding:20px}
+.modal.open{display:grid}
+.modal-card{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:var(--r-l);padding:26px;max-width:420px;width:100%;text-align:center;box-shadow:var(--shadow)}
+.promo-row{display:flex;justify-content:center;gap:10px;margin-top:14px;direction:ltr}
+.promo-row button{width:62px;height:62px;font-size:36px;border-radius:var(--r-m);border:1px solid var(--ink-3);background:var(--ivory);color:#2a1a2e;cursor:pointer;line-height:1}
+.promo-row button:hover{border-color:var(--gold)}
+.toast{position:fixed;inset-inline:0;bottom:calc(90px + env(safe-area-inset-bottom,0px));z-index:95;display:flex;justify-content:center;pointer-events:none;padding-inline:20px}
+.toast b{background:#2a1c38;border:1px solid var(--gold);color:var(--ivory);padding:9px 18px;border-radius:999px;font-size:.88rem;opacity:0;transition:opacity .25s;text-align:center}
+.toast b.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-head">
+  <div class="wrap head-in">
+    <a href="#top" class="logo">
+      <span class="mark">♛</span>
+      <span>Chess for My Mary<small>حساب، أصدقاء، ومباريات أونلاين</small></span>
+    </a>
+    <button class="burger" id="burger" aria-label="فتح القائمة" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav" id="nav">
+      <a href="#play">الرقعة</a>
+      <a href="#account">حسابي والأصدقاء</a>
+      <a href="#rules">القواعد</a>
+      <a href="#contact">تواصل</a>
+      <span class="head-user" id="headUser"><img id="headAvatar" alt=""><b id="headName"></b></span>
+      <a class="btn btn-gold btn-sm" href="#account" id="headCta">سجّل الدخول</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>شطرنج لماري، بحساب وأصدقاء</h1>
+      <p class="lead">سجّل دخولك بحساب جوجل في ضغطة واحدة، أضف أصدقاءك بكود الصداقة أو بالإيميل، وشوف مين منهم متصل الآن، وادعُه لمباراة تنتقل نقلاتها بين الجهازين لحظة بلحظة. وكل نقلة تمرّ على فحص قانوني كامل عند الطرفين.</p>
+      <div class="hero-actions">
+        <a class="btn btn-gold" href="#account">سجّل الدخول بجوجل</a>
+        <a class="btn btn-ghost" href="#play">العب ضد الحاسوب</a>
+      </div>
+      <div class="hero-facts">
+        <div class="fact"><b>حساب جوجل</b><span>بدون كلمات مرور ولا نماذج تسجيل</span></div>
+        <div class="fact"><b>قائمة أصدقاء</b><span>طلبات، حالة اتصال، ودعوة للعب</span></div>
+        <div class="fact"><b>سجل نتائج</b><span>فوز وخسارة وتعادل محفوظة لحسابك</span></div>
+      </div>
+    </div>
+    <div class="hero-art" id="heroArt" aria-hidden="true"></div>
+  </div>
+</section>
+
+<!-- ============ اللعبة ============ -->
+<section class="game" id="play">
+  <div class="wrap">
+    <h2>الرقعة</h2>
+    <p>اضغط القطعة لترى نقلاتها، ثم اضغط المربع الذي تريده. الرقعة مثبّتة في مكانها ولا تهتز أثناء اللعب.</p>
+    <div class="game-grid">
+      <div class="board-card">
+        <div class="conn-banner" id="connBanner"></div>
+        <div class="status-bar">
+          <span class="turn-dot" id="turnDot"></span>
+          <span id="statusText">الدور على الأبيض</span>
+          <span class="tag" id="modeTag">لاعبان</span>
+        </div>
+        <div class="captured" id="capByBlack"></div>
+        <div class="board-shell"><div class="board" id="board"></div></div>
+        <div class="material-bar"><i class="w" id="barW" style="width:50%"></i><i class="b" id="barB" style="width:50%"></i></div>
+        <div class="captured" id="capByWhite"></div>
+      </div>
+
+      <aside>
+        <div class="panel" id="livePanel" style="display:none">
+          <h3>المباراة الجارية</h3>
+          <ul class="list"><li style="border:none;padding:0"><span class="dot on"></span><span class="nm" id="oppName"></span></li></ul>
+          <div class="controls" style="margin-top:10px">
+            <button class="btn btn-ghost btn-sm" id="btnResign">انسحاب</button>
+            <button class="btn btn-ghost btn-sm" id="btnRematch">مباراة جديدة معه</button>
+            <button class="btn btn-ghost btn-sm" id="btnCopyGameLink" style="grid-column:1/-1">نسخ رابط المباراة</button>
+          </div>
+        </div>
+
+        <div class="panel" id="linkInvitePanel" style="display:none">
+          <h3>ابدأ مباراة برابط</h3>
+          <p class="empty" style="margin:0 0 10px">أنشئ مباراة وابعت رابطها لأي حد، مش لازم يكون صديق مضاف مسبقًا.</p>
+          <button class="btn btn-gold btn-sm" id="btnCreateLinkGame" style="width:100%">إنشاء مباراة ورابط دعوة</button>
+          <div id="linkWaitBox" style="display:none;margin-top:12px">
+            <div class="code-row">
+              <span style="font-size:.85rem;color:var(--muted)">رابط المباراة:</span>
+            </div>
+            <div class="code-row">
+              <span class="code-chip" id="linkWaitCode" style="direction:ltr;font-size:.8rem;letter-spacing:0;overflow:hidden;text-overflow:ellipsis;max-width:100%"></span>
+            </div>
+            <div class="controls">
+              <button class="btn btn-ghost btn-sm" id="btnCopyWaitLink">نسخ الرابط</button>
+              <button class="btn btn-ghost btn-sm" id="btnShareWaitLink">مشاركة</button>
+              <button class="btn btn-ghost btn-sm" id="btnCancelWaitLink" style="grid-column:1/-1">إلغاء الانتظار</button>
+            </div>
+            <p class="empty" id="linkWaitStatus">بانتظار دخول الطرف الثاني…</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>إعدادات المباراة</h3>
+          <div class="field">
+            <label for="modeSel">طريقة اللعب</label>
+            <select id="modeSel">
+              <option value="hvh">لاعبان على نفس الجهاز</option>
+              <option value="hvc">أنا بالأبيض ضد الحاسوب</option>
+              <option value="cvh">أنا بالأسود ضد الحاسوب</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="lvlSel">مستوى الحاسوب</label>
+            <select id="lvlSel">
+              <option value="1">مبتدئ</option>
+              <option value="2" selected>متوسط</option>
+              <option value="3">صعب</option>
+            </select>
+          </div>
+          <div class="controls">
+            <button class="btn btn-gold btn-sm" id="btnNew">مباراة جديدة</button>
+            <button class="btn btn-ghost btn-sm" id="btnUndo">تراجع نقلة</button>
+            <button class="btn btn-ghost btn-sm" id="btnFlip">اقلب الرقعة</button>
+            <button class="btn btn-ghost btn-sm" id="btnPoints">احسم بالقطع</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>سجل النقلات</h3>
+          <div class="moves" id="moves"><ol id="movesList"></ol></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ الحساب والأصدقاء ============ -->
+<section id="account">
+  <div class="wrap">
+    <h2>حسابي والأصدقاء</h2>
+    <div class="game-grid">
+
+      <div>
+        <div class="panel" id="authPanel">
+          <div id="cfgNotice" class="notice" style="display:none"></div>
+          <div id="signedOut">
+            <h3>الدخول</h3>
+            <p style="color:var(--muted);font-size:.93rem">سجّل بحساب جوجل ليظهر اسمك وصورتك، ويصير لك كود صداقة وسجل نتائج.</p>
+            <button class="btn btn-google" id="btnGoogle" style="width:100%">
+              <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2.5 24 .5 14.6.5 6.5 5.8 2.6 13.6l7.8 6c1.9-5.7 7.2-10.1 13.6-10.1z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.2-.4-4.7H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.3z"/><path fill="#FBBC05" d="M10.4 28.4c-.5-1.4-.8-2.9-.8-4.4s.3-3 .8-4.4l-7.8-6C1 16.6 0 20.2 0 24s1 7.4 2.6 10.4l7.8-6z"/><path fill="#34A853" d="M24 47.5c6.2 0 11.5-2 15.4-5.6l-7.5-5.8c-2.1 1.4-4.8 2.2-7.9 2.2-6.4 0-11.7-4.3-13.6-10.1l-7.8 6C6.5 42.2 14.6 47.5 24 47.5z"/></svg>
+              متابعة بحساب جوجل
+            </button>
+          </div>
+
+          <div id="signedIn" style="display:none">
+            <div class="acct">
+              <img id="myAvatar" alt="صورة الحساب">
+              <div class="who"><b id="myName"></b><span id="myEmail"></span></div>
+            </div>
+            <div class="code-row">
+              <span style="font-size:.85rem;color:var(--muted)">كود الصداقة:</span>
+              <span class="code-chip" id="myCode">------</span>
+              <button class="btn btn-ghost btn-sm" id="btnCopyCode">انسخ</button>
+            </div>
+            <div class="stats">
+              <div><b id="stW">0</b><span>فوز</span></div>
+              <div><b id="stL">0</b><span>خسارة</span></div>
+              <div><b id="stD">0</b><span>تعادل</span></div>
+            </div>
+            <button class="btn btn-ghost btn-sm" id="btnSignOut" style="width:100%">تسجيل الخروج</button>
+          </div>
+        </div>
+
+        <div class="panel" id="invitePanel" style="display:none">
+          <h3>دعوات واردة</h3>
+          <ul class="list" id="inviteList"></ul>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel" id="friendsPanel" style="display:none">
+          <h3>إضافة صديق</h3>
+          <div class="add-row">
+            <input type="text" id="addInput" placeholder="كود الصداقة أو الإيميل" autocomplete="off">
+            <button class="btn btn-gold btn-sm" id="btnAdd">أضف</button>
+          </div>
+          <p class="empty">ابعت كودك لصاحبك، أو أدخل إيميله المسجَّل به.</p>
+
+          <h3 style="margin-top:18px">طلبات صداقة</h3>
+          <ul class="list" id="reqList"></ul>
+          <p class="empty" id="reqEmpty">لا توجد طلبات حاليًا.</p>
+
+          <h3 style="margin-top:18px">أصدقائي</h3>
+          <ul class="list" id="frList"></ul>
+          <p class="empty" id="frEmpty">لم تُضف أي صديق بعد.</p>
+        </div>
+
+        <div class="panel">
+          <h3>إعداد الخادم (مرة واحدة)</h3>
+          <p style="color:var(--muted);font-size:.92rem;margin:0">الحسابات والأصدقاء يحتاجان قاعدة بيانات. المشروع يعمل على Firebase المجاني من جوجل، وكل المطلوب منك لصق بيانات مشروعك في أعلى الكود.</p>
+          <details>
+            <summary>الخطوات كاملة</summary>
+            <ol>
+              <li>ادخل console.firebase.google.com وأنشئ مشروعًا جديدًا.</li>
+              <li>Build ← Authentication ← Sign-in method ← فعّل Google.</li>
+              <li>Build ← Realtime Database ← Create database.</li>
+              <li>Project settings ← Your apps ← Web ← انسخ كائن firebaseConfig.</li>
+              <li>الصقه في المتغير <code>FIREBASE_CONFIG</code> أعلى سكربت الصفحة.</li>
+              <li>Authentication ← Settings ← Authorized domains ← أضف نطاق موقعك.</li>
+              <li>الصق قواعد الأمان التالية في Realtime Database ← Rules.</li>
+            </ol>
+<pre>{
+  "rules": {
+    "users": {
+      ".read": "auth != null",
+      "$uid": { ".write": "auth != null && auth.uid === $uid" }
+    },
+    "codes": {
+      ".read": "auth != null",
+      "$c": { ".write": "auth != null && (!data.exists() || data.val() === auth.uid)" }
+    },
+    "emails": {
+      ".read": "auth != null",
+      "$e": { ".write": "auth != null && (!data.exists() || data.val() === auth.uid)" }
+    },
+    "friends": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$f": { ".write": "auth != null && (auth.uid === $uid || auth.uid === $f)" }
+      }
+    },
+    "requests": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$from": { ".write": "auth != null && (auth.uid === $from || auth.uid === $uid)" }
+      }
+    },
+    "invites": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$g": { ".write": "auth != null" }
+      }
+    },
+    "games": {
+      "$g": {
+        ".read": "auth != null",
+        ".write": "auth != null && ((!data.exists() && newData.child('w').val() === auth.uid) || data.child('w').val() === auth.uid || data.child('b').val() === auth.uid || (!data.child('b').exists() && newData.child('b').val() === auth.uid))"
+      }
+    }
+  }
+}</pre>
+            <p class="empty" style="margin-top:10px">ملاحظة مهمة: قواعد Realtime Database تقدر تتحقق من هوية اللاعبين (مين يكتب في المباراة)، لكنها ما تقدرش تتحقق من صحة نقلة الشطرنج نفسها (هل هي قانونية فعلاً). التحقق من قانونية النقلة يحصل حاليًا في متصفح كل لاعب. لمنع الغش الكامل 100% محتاج طبقة إضافية (Cloud Function تتحقق من كل نقلة قبل قبولها)، وهي خطوة ممكن تُضاف لاحقًا لو احتجتها.</p>
+          </details>
+          <p class="empty" style="margin-top:10px">ملاحظة: دخول جوجل لا يعمل من ملف مفتوح بـ file://، لازم الموقع يكون مرفوعًا على استضافة أو localhost.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ القواعد ============ -->
+<section id="rules">
+  <div class="wrap">
+    <h2>القواعد المطبَّقة داخل المحرّك</h2>
+    <p>كل نقلة تمرّ على فحص قانوني كامل قبل تنفيذها، محليًا وأونلاين، ولا يمكن لعب نقلة تترك ملكك تحت الكش.</p>
+    <div class="feat">
+      <article><h3>حركة كل قطعة</h3><p>كل قطعة بمداها الصحيح، بلا قفز غير مشروع.</p></article>
+      <article><h3>التبييت</h3><p>فقط إن لم يتحرك الملك ولا الرخ، والمربعات خالية، والملك لا يمر بمربع مهدَّد.</p></article>
+      <article><h3>الأخذ بالمرور</h3><p>في النقلة التالية مباشرة لدفعة البيدق المزدوجة، وإلا سقط الحق.</p></article>
+      <article><h3>ترقية البيدق</h3><p>تختار بنفسك: وزير، رخ، فيل، أو حصان.</p></article>
+      <article><h3>الكش والمات</h3><p>مربع الملك يتلوّن بالأحمر، والمات ينهي المباراة بإعلان الفائز.</p></article>
+      <article><h3>الفوز بالقطع</h3><p>عند الجمود أو التكرار أو الخمسين نقلة، يفوز صاحب القطع الأعلى قيمة.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-foot" id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Chess for My Mary</h4>
+        <p style="color:var(--muted);font-size:.92rem">شطرنج بقواعد كاملة، بحساب جوجل وقائمة أصدقاء ومباريات أونلاين لحظية.</p>
+      </div>
+      <div>
+        <h4>روابط</h4>
+        <ul>
+          <li><a href="#play">الرقعة</a></li>
+          <li><a href="#account">حسابي والأصدقاء</a></li>
+          <li><a href="#rules">القواعد</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>مواعيد الدعم</h4>
+        <ul>
+          <li>السبت – الخميس: ١٠ص – ١٠م</li>
+          <li>الجمعة: ٤م – ١٠م</li>
+          <li>الردّ عبر واتساب خلال ساعة</li>
+        </ul>
+      </div>
+      <div>
+        <h4>تواصل</h4>
+        <ul>
+          <li><a id="waFoot" href="#">واتساب</a></li>
+          <li><a href="mailto:hello@chessformary.com">hello@chessformary.com</a></li>
+          <li>طنطا، الغربية، مصر</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© <span id="yr"></span> Chess for My Mary — جميع الحقوق محفوظة.</span>
+      <span>صُنع بحبّ لماري ♥</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa" id="waBtn" href="#" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 004.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.13c-.25.7-1.44 1.33-1.99 1.38-.53.05-1.02.24-3.44-.72-2.9-1.14-4.73-4.1-4.87-4.29-.14-.19-1.16-1.54-1.16-2.94s.73-2.09.99-2.37c.26-.29.57-.36.76-.36l.55.01c.18 0 .41-.07.64.49.24.57.81 1.98.88 2.12.07.14.12.31.02.5-.09.19-.14.31-.28.47l-.42.49c-.14.14-.28.29-.12.57.16.28.71 1.17 1.52 1.9 1.04.93 1.92 1.21 2.2 1.35.28.14.44.12.6-.07.17-.19.69-.81.88-1.09.19-.28.37-.23.62-.14.25.09 1.61.76 1.89.9.28.14.46.21.53.33.07.12.07.68-.18 1.38z"/></svg>
+</a>
+
+<button class="chat-fab" id="chatFab" aria-label="افتح المساعد">♟</button>
+<div class="chat-box" id="chatBox" role="dialog" aria-label="مساعد اللعبة">
+  <div class="chat-head">
+    <span style="font-size:22px">♞</span>
+    <div><b>مساعد الرقعة</b><small>متصل الآن</small></div>
+    <button class="btn btn-ghost btn-sm" id="chatClose" style="margin-inline-start:auto;padding:4px 10px">إغلاق</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chips" id="chips"></div>
+  <form class="chat-form" id="chatForm">
+    <input type="text" id="chatInput" placeholder="اكتب سؤالك..." autocomplete="off">
+    <button type="submit" aria-label="إرسال">➤</button>
+  </form>
+</div>
+
+<div class="modal" id="promoModal">
+  <div class="modal-card">
+    <h3>اختر قطعة الترقية</h3>
+    <p style="color:var(--muted);margin:0">وصل البيدق إلى الصف الأخير.</p>
+    <div class="promo-row" id="promoRow"></div>
+  </div>
+</div>
+
+<div class="modal" id="endModal">
+  <div class="modal-card">
+    <h3 id="endTitle">انتهت المباراة</h3>
+    <p id="endText" style="color:var(--muted)"></p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:8px">
+      <button class="btn btn-gold" id="endNew">مباراة جديدة</button>
+      <button class="btn btn-ghost" id="endClose">استعراض الرقعة</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast"><b id="toast"></b></div>
+
+<script>
+/* =========================================================
+   Chess for My Mary
+   المحرك + الحاسوب + حسابات جوجل وأصدقاء ومباريات أونلاين (Firebase)
+   ========================================================= */
+(function(){
+"use strict";
+
+/* ⬇⬇⬇ ١) الصق بيانات مشروع Firebase هنا ⬇⬇⬇ */
+var FIREBASE_CONFIG={
+  apiKey:"",
+  authDomain:"",
+  databaseURL:"",
+  projectId:"",
+  storageBucket:"",
+  messagingSenderId:"",
+  appId:""
+};
+/* ⬇⬇⬇ ٢) رقم الواتساب بالصيغة الدولية بدون + ⬇⬇⬇ */
+var WA_NUMBER="201000000000";
+var FB_VER="10.12.5";
+
+/* ---------------- المحرك ---------------- */
+var GLYPH={K:"\u265A",Q:"\u265B",R:"\u265C",B:"\u265D",N:"\u265E",P:"\u265F"};
+var VALUE={P:1,N:3,B:3,R:5,Q:9,K:0};
+var CEN={P:100,N:320,B:330,R:500,Q:900,K:20000};
+var FILES="abcdefgh";
+
+function startBoard(){
+  return [
+    ["bR","bN","bB","bQ","bK","bB","bN","bR"],
+    ["bP","bP","bP","bP","bP","bP","bP","bP"],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,null,null,null,null,null],
+    ["wP","wP","wP","wP","wP","wP","wP","wP"],
+    ["wR","wN","wB","wQ","wK","wB","wN","wR"]
+  ];
+}
+function cloneState(s){
+  var b=new Array(8);
+  for(var i=0;i<8;i++) b[i]=s.board[i].slice();
+  return {board:b,turn:s.turn,cas:{wK:s.cas.wK,wQ:s.cas.wQ,bK:s.cas.bK,bQ:s.cas.bQ},
+          ep:s.ep?[s.ep[0],s.ep[1]]:null,half:s.half,full:s.full};
+}
+function inside(r,c){return r>=0&&r<8&&c>=0&&c<8;}
+function colorOf(p){return p?p[0]:null;}
+function typeOf(p){return p?p[1]:null;}
+function enemy(c){return c==="w"?"b":"w";}
+
+function attacked(b,r,c,by){
+  var i,rr,cc,p;
+  var pd=(by==="w")?1:-1;
+  for(i=-1;i<=1;i+=2){rr=r+pd;cc=c+i;if(inside(rr,cc)&&b[rr][cc]===by+"P")return true;}
+  var N=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+  for(i=0;i<8;i++){rr=r+N[i][0];cc=c+N[i][1];if(inside(rr,cc)&&b[rr][cc]===by+"N")return true;}
+  for(var a=-1;a<=1;a++)for(var d=-1;d<=1;d++){
+    if(!a&&!d)continue;rr=r+a;cc=c+d;
+    if(inside(rr,cc)&&b[rr][cc]===by+"K")return true;}
+  var R=[[-1,0],[1,0],[0,-1],[0,1]];
+  for(i=0;i<4;i++){rr=r;cc=c;
+    while(true){rr+=R[i][0];cc+=R[i][1];if(!inside(rr,cc))break;p=b[rr][cc];
+      if(p){if(colorOf(p)===by&&(typeOf(p)==="R"||typeOf(p)==="Q"))return true;break;}}}
+  var B=[[-1,-1],[-1,1],[1,-1],[1,1]];
+  for(i=0;i<4;i++){rr=r;cc=c;
+    while(true){rr+=B[i][0];cc+=B[i][1];if(!inside(rr,cc))break;p=b[rr][cc];
+      if(p){if(colorOf(p)===by&&(typeOf(p)==="B"||typeOf(p)==="Q"))return true;break;}}}
+  return false;
+}
+function findKing(b,col){
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++) if(b[r][c]===col+"K") return [r,c];
+  return null;
+}
+function inCheck(s,col){var k=findKing(s.board,col);return k?attacked(s.board,k[0],k[1],enemy(col)):false;}
+
+function pseudoMoves(s,col){
+  var b=s.board,out=[],r,c,p,t;
+  function push(fr,fc,tr,tc,extra){
+    var m={from:[fr,fc],to:[tr,tc],piece:b[fr][fc],cap:b[tr][tc]||null};
+    if(extra) for(var k in extra) m[k]=extra[k];
+    out.push(m);
+  }
+  for(r=0;r<8;r++)for(c=0;c<8;c++){
+    p=b[r][c]; if(!p||colorOf(p)!==col) continue;
+    t=typeOf(p);
+    if(t==="P"){
+      var dir=(col==="w")?-1:1,startRow=(col==="w")?6:1,lastRow=(col==="w")?0:7,r1=r+dir;
+      if(inside(r1,c)&&!b[r1][c]){
+        if(r1===lastRow){["Q","R","B","N"].forEach(function(q){push(r,c,r1,c,{promo:q});});}
+        else push(r,c,r1,c,null);
+        var r2=r+2*dir;
+        if(r===startRow&&!b[r2][c]) push(r,c,r2,c,{dbl:true});
+      }
+      for(var dc=-1;dc<=1;dc+=2){
+        var cc=c+dc; if(!inside(r1,cc))continue;
+        var tp=b[r1][cc];
+        if(tp&&colorOf(tp)!==col){
+          if(r1===lastRow){["Q","R","B","N"].forEach(function(q){push(r,c,r1,cc,{promo:q});});}
+          else push(r,c,r1,cc,null);
+        } else if(!tp&&s.ep&&s.ep[0]===r1&&s.ep[1]===cc){ push(r,c,r1,cc,{ep:true,cap:b[r][cc]}); }
+      }
+    }
+    else if(t==="N"){
+      var NJ=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+      for(var i=0;i<8;i++){var rr=r+NJ[i][0],c2=c+NJ[i][1];
+        if(inside(rr,c2)&&colorOf(b[rr][c2])!==col) push(r,c,rr,c2,null);}
+    }
+    else if(t==="K"){
+      for(var a=-1;a<=1;a++)for(var d=-1;d<=1;d++){
+        if(!a&&!d)continue;var kr=r+a,kc=c+d;
+        if(inside(kr,kc)&&colorOf(b[kr][kc])!==col) push(r,c,kr,kc,null);}
+      var home=(col==="w")?7:0;
+      if(r===home&&c===4&&!attacked(b,r,c,enemy(col))){
+        if(s.cas[col+"K"]&&b[home][5]===null&&b[home][6]===null&&b[home][7]===col+"R"
+           &&!attacked(b,home,5,enemy(col))&&!attacked(b,home,6,enemy(col))) push(r,c,home,6,{castle:"K"});
+        if(s.cas[col+"Q"]&&b[home][1]===null&&b[home][2]===null&&b[home][3]===null&&b[home][0]===col+"R"
+           &&!attacked(b,home,3,enemy(col))&&!attacked(b,home,2,enemy(col))) push(r,c,home,2,{castle:"Q"});
+      }
+    }
+    else{
+      var dirs=[];
+      if(t==="R"||t==="Q") dirs=dirs.concat([[-1,0],[1,0],[0,-1],[0,1]]);
+      if(t==="B"||t==="Q") dirs=dirs.concat([[-1,-1],[-1,1],[1,-1],[1,1]]);
+      for(var j=0;j<dirs.length;j++){
+        var sr=r,sc=c;
+        while(true){
+          sr+=dirs[j][0];sc+=dirs[j][1];
+          if(!inside(sr,sc))break;
+          var q=b[sr][sc];
+          if(!q){push(r,c,sr,sc,null);continue;}
+          if(colorOf(q)!==col) push(r,c,sr,sc,null);
+          break;
+        }
+      }
+    }
+  }
+  return out;
+}
+function applyMove(s,m){
+  var n=cloneState(s),b=n.board;
+  var fr=m.from[0],fc=m.from[1],tr=m.to[0],tc=m.to[1];
+  var piece=b[fr][fc],col=colorOf(piece),t=typeOf(piece),captured=b[tr][tc];
+  b[fr][fc]=null;
+  if(m.ep){ b[fr][tc]=null; captured=enemy(col)+"P"; }
+  b[tr][tc]= m.promo ? col+m.promo : piece;
+  if(m.castle==="K"){ b[tr][5]=col+"R"; b[tr][7]=null; }
+  if(m.castle==="Q"){ b[tr][3]=col+"R"; b[tr][0]=null; }
+  if(t==="K"){ n.cas[col+"K"]=false; n.cas[col+"Q"]=false; }
+  if(t==="R"){
+    if(fc===0&&fr===(col==="w"?7:0)) n.cas[col+"Q"]=false;
+    if(fc===7&&fr===(col==="w"?7:0)) n.cas[col+"K"]=false;
+  }
+  if(captured&&typeOf(captured)==="R"&&!m.ep){
+    var ec=enemy(col),eh=(ec==="w")?7:0;
+    if(tr===eh&&tc===0) n.cas[ec+"Q"]=false;
+    if(tr===eh&&tc===7) n.cas[ec+"K"]=false;
+  }
+  n.ep=(t==="P"&&Math.abs(tr-fr)===2)?[(fr+tr)/2,fc]:null;
+  n.half=(t==="P"||captured)?0:s.half+1;
+  n.full=(col==="b")?s.full+1:s.full;
+  n.turn=enemy(col);
+  return n;
+}
+function legalMoves(s,col){
+  col=col||s.turn;
+  var ps=pseudoMoves(s,col),out=[];
+  for(var i=0;i<ps.length;i++){ if(!inCheck(applyMove(s,ps[i]),col)) out.push(ps[i]); }
+  return out;
+}
+function toSAN(s,m,all){
+  if(m.castle==="K") return "O-O";
+  if(m.castle==="Q") return "O-O-O";
+  var t=typeOf(m.piece),to=FILES[m.to[1]]+(8-m.to[0]),san="",isCap=!!m.cap||m.ep;
+  if(t==="P"){
+    if(isCap) san+=FILES[m.from[1]]+"x";
+    san+=to; if(m.promo) san+="="+m.promo;
+  } else {
+    san+=t;
+    var same=all.filter(function(x){
+      return typeOf(x.piece)===t&&x.to[0]===m.to[0]&&x.to[1]===m.to[1]&&
+             !(x.from[0]===m.from[0]&&x.from[1]===m.from[1]);});
+    if(same.length){
+      var sameFile=same.some(function(x){return x.from[1]===m.from[1];});
+      var sameRank=same.some(function(x){return x.from[0]===m.from[0];});
+      if(!sameFile) san+=FILES[m.from[1]];
+      else if(!sameRank) san+=(8-m.from[0]);
+      else san+=FILES[m.from[1]]+(8-m.from[0]);
+    }
+    if(isCap) san+="x";
+    san+=to;
+  }
+  return san;
+}
+function material(b){
+  var w=0,bl=0;
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var p=b[r][c]; if(!p||typeOf(p)==="K") continue;
+    if(colorOf(p)==="w") w+=VALUE[typeOf(p)]; else bl+=VALUE[typeOf(p)];
+  }
+  return {w:w,b:bl};
+}
+function insufficient(b){
+  var list=[];
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){var p=b[r][c];if(p&&typeOf(p)!=="K")list.push(typeOf(p));}
+  if(list.length===0) return true;
+  if(list.length===1&&(list[0]==="N"||list[0]==="B")) return true;
+  return false;
+}
+function posKey(s){
+  var k="";
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++) k+=s.board[r][c]||"..";
+  return k+s.turn+(s.cas.wK?1:0)+(s.cas.wQ?1:0)+(s.cas.bK?1:0)+(s.cas.bQ?1:0)+(s.ep?s.ep.join(""):"-");
+}
+
+/* ---------------- الحاسوب ---------------- */
+var PST={
+ P:[0,0,0,0,0,0,0,0, 50,50,50,50,50,50,50,50, 10,10,20,30,30,20,10,10,
+    5,5,10,25,25,10,5,5, 0,0,0,20,20,0,0,0, 5,-5,-10,0,0,-10,-5,5,
+    5,10,10,-20,-20,10,10,5, 0,0,0,0,0,0,0,0],
+ N:[-50,-40,-30,-30,-30,-30,-40,-50, -40,-20,0,0,0,0,-20,-40, -30,0,10,15,15,10,0,-30,
+    -30,5,15,20,20,15,5,-30, -30,0,15,20,20,15,0,-30, -30,5,10,15,15,10,5,-30,
+    -40,-20,0,5,5,0,-20,-40, -50,-40,-30,-30,-30,-30,-40,-50],
+ B:[-20,-10,-10,-10,-10,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,10,10,5,0,-10,
+    -10,5,5,10,10,5,5,-10, -10,0,10,10,10,10,0,-10, -10,10,10,10,10,10,10,-10,
+    -10,5,0,0,0,0,5,-10, -20,-10,-10,-10,-10,-10,-10,-20],
+ R:[0,0,0,0,0,0,0,0, 5,10,10,10,10,10,10,5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5,
+    -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, 0,0,0,5,5,0,0,0],
+ Q:[-20,-10,-10,-5,-5,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,5,5,5,0,-10,
+    -5,0,5,5,5,5,0,-5, 0,0,5,5,5,5,0,-5, -10,5,5,5,5,5,0,-10,
+    -10,0,5,0,0,0,0,-10, -20,-10,-10,-5,-5,-10,-10,-20],
+ K:[-30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30,
+    -30,-40,-40,-50,-50,-40,-40,-30, -20,-30,-30,-40,-40,-30,-30,-20, -10,-20,-20,-20,-20,-20,-20,-10,
+    20,20,0,0,0,0,20,20, 20,30,10,0,0,10,30,20]
+};
+function evaluate(s){
+  var sc=0;
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var p=s.board[r][c]; if(!p) continue;
+    var t=typeOf(p),idx=(colorOf(p)==="w")?(r*8+c):((7-r)*8+c);
+    sc+=(colorOf(p)==="w")?(CEN[t]+PST[t][idx]):-(CEN[t]+PST[t][idx]);
+  }
+  return sc;
+}
+function orderMoves(ms){
+  return ms.slice().sort(function(a,b){
+    var va=(a.cap?CEN[typeOf(a.cap)]:0)+(a.promo?800:0);
+    var vb=(b.cap?CEN[typeOf(b.cap)]:0)+(b.promo?800:0);
+    return vb-va;});
+}
+function search(s,depth,alpha,beta){
+  var ms=legalMoves(s,s.turn);
+  if(!ms.length) return inCheck(s,s.turn)?(s.turn==="w"?-99999-depth:99999+depth):0;
+  if(depth===0) return evaluate(s);
+  ms=orderMoves(ms);
+  var i,val;
+  if(s.turn==="w"){
+    val=-1e9;
+    for(i=0;i<ms.length;i++){val=Math.max(val,search(applyMove(s,ms[i]),depth-1,alpha,beta));
+      alpha=Math.max(alpha,val); if(beta<=alpha) break;}
+  } else {
+    val=1e9;
+    for(i=0;i<ms.length;i++){val=Math.min(val,search(applyMove(s,ms[i]),depth-1,alpha,beta));
+      beta=Math.min(beta,val); if(beta<=alpha) break;}
+  }
+  return val;
+}
+function bestMove(s,depth){
+  var ms=orderMoves(legalMoves(s,s.turn));
+  if(!ms.length) return null;
+  if(depth<=1){
+    var pool=ms.slice(0,Math.max(3,Math.ceil(ms.length/2)));
+    var scored=pool.map(function(m){return {m:m,v:evaluate(applyMove(s,m))*(s.turn==="w"?1:-1)};});
+    scored.sort(function(a,b){return b.v-a.v;});
+    return scored[Math.random()<0.65?0:Math.min(1,scored.length-1)].m;
+  }
+  var best=null,bv=(s.turn==="w")?-1e9:1e9;
+  for(var i=0;i<ms.length;i++){
+    var v=search(applyMove(s,ms[i]),depth-1,-1e9,1e9);
+    if(s.turn==="w"?v>bv:v<bv){bv=v;best=ms[i];}
+  }
+  return best||ms[0];
+}
+
+/* =========================================================
+   الواجهة
+   ========================================================= */
+var state,history,keys,sanList,flipped=false,selected=null,legalCache=[],over=false,thinking=false;
+var boardEl=document.getElementById("board");
+var movesList=document.getElementById("movesList");
+var statusText=document.getElementById("statusText");
+var turnDot=document.getElementById("turnDot");
+var modeSel=document.getElementById("modeSel");
+var lvlSel=document.getElementById("lvlSel");
+var modeTag=document.getElementById("modeTag");
+var sqEls=[],pcEls=[];
+
+/* المباراة الأونلاين الجارية */
+var live={on:false,gid:null,color:null,opp:null,oppName:"",applied:0,offs:[],ended:false};
+
+function humanColor(){
+  if(live.on) return live.color;
+  var m=modeSel.value;
+  if(m==="hvh") return "both";
+  return m==="hvc"?"w":"b";
+}
+function isComputerTurn(){
+  if(live.on) return false;
+  var h=humanColor();
+  return h!=="both"&&state.turn!==h;
+}
+function buildBoard(){
+  boardEl.innerHTML="";
+  for(var r=0;r<8;r++){sqEls[r]=[];pcEls[r]=[];
+    for(var c=0;c<8;c++){
+      var d=document.createElement("div");
+      d.className="sq";d.dataset.r=r;d.dataset.c=c;
+      var sp=document.createElement("span");sp.className="pc";d.appendChild(sp);
+      var h=document.createElement("i");h.className="hint";d.appendChild(h);
+      var cr=document.createElement("i");cr.className="coord r";d.appendChild(cr);
+      var cf=document.createElement("i");cf.className="coord f";d.appendChild(cf);
+      sqEls[r][c]=d;pcEls[r][c]=sp;
+    }}
+  layoutBoard();
+}
+function layoutBoard(){
+  var rows=[0,1,2,3,4,5,6,7],cols=[0,1,2,3,4,5,6,7];
+  if(flipped){rows=rows.slice().reverse();cols=cols.slice().reverse();}
+  var frag=document.createDocumentFragment();
+  rows.forEach(function(r,ri){
+    cols.forEach(function(c,ci){
+      var d=sqEls[r][c];
+      d.querySelector(".coord.r").textContent=(ci===0)?String(8-r):"";
+      d.querySelector(".coord.f").textContent=(ri===7)?FILES[c]:"";
+      frag.appendChild(d);
+    });
+  });
+  boardEl.appendChild(frag);
+}
+function updateBoard(){
+  var last=history.length?history[history.length-1].move:null;
+  var checkSq=inCheck(state,state.turn)?findKing(state.board,state.turn):null;
+  var targets={};
+  if(selected) legalCache.forEach(function(m){targets[m.to[0]+","+m.to[1]]=(m.cap||m.ep)?2:1;});
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var d=sqEls[r][c],p=state.board[r][c],sp=pcEls[r][c];
+    var cls="sq "+(((r+c)%2===0)?"light":"dark");
+    if(last&&((last.from[0]===r&&last.from[1]===c)||(last.to[0]===r&&last.to[1]===c))) cls+=" last";
+    if(selected&&selected[0]===r&&selected[1]===c) cls+=" sel";
+    if(checkSq&&checkSq[0]===r&&checkSq[1]===c) cls+=" check";
+    var tg=targets[r+","+c];
+    if(tg) cls+=(tg===2)?" can cap":" can";
+    if(d.className!==cls) d.className=cls;
+    var glyph=p?GLYPH[typeOf(p)]:"";
+    if(sp.textContent!==glyph) sp.textContent=glyph;
+    var pcls="pc"+(p?" "+colorOf(p):"");
+    if(sp.className!==pcls) sp.className=pcls;
+  }
+  boardEl.classList.toggle("locked",over||thinking);
+}
+function render(){
+  updateBoard();
+  turnDot.className="turn-dot"+(state.turn==="b"?" b":"");
+  if(!over){
+    var txt=state.turn==="w"?"الدور على الأبيض":"الدور على الأسود";
+    if(thinking) txt+=" (الحاسوب يفكر…)";
+    else if(live.on&&state.turn!==live.color) txt+=" (دور خصمك)";
+    else if(inCheck(state,state.turn)) txt+=" — كش ملك!";
+    statusText.textContent=txt;
+  }
+  modeTag.textContent=live.on?("أونلاين — أنت "+(live.color==="w"?"الأبيض":"الأسود")):(modeSel.value==="hvh"?"لاعبان":"ضد الحاسوب");
+  renderCaptured();
+  renderMoves();
+}
+function renderCaptured(){
+  var start={P:8,N:2,B:2,R:2,Q:1},cur={w:{},b:{}};
+  ["w","b"].forEach(function(col){["P","N","B","R","Q"].forEach(function(t){cur[col][t]=0;});});
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var p=state.board[r][c];
+    if(p&&typeOf(p)!=="K") cur[colorOf(p)][typeOf(p)]++;
+  }
+  function html(col){
+    var s="";
+    ["Q","R","B","N","P"].forEach(function(t){
+      var n=start[t]-cur[col][t];
+      for(var i=0;i<n;i++) s+='<span class="s">'+GLYPH[t]+'</span>';});
+    return s;
+  }
+  var m=material(state.board);
+  document.getElementById("capByBlack").innerHTML=html("w")+(m.b>m.w?'<span class="score">+'+(m.b-m.w)+'</span>':"");
+  document.getElementById("capByWhite").innerHTML=html("b")+(m.w>m.b?'<span class="score">+'+(m.w-m.b)+'</span>':"");
+  var tot=m.w+m.b||1;
+  document.getElementById("barW").style.width=(m.w/tot*100)+"%";
+  document.getElementById("barB").style.width=(m.b/tot*100)+"%";
+}
+function renderMoves(){
+  movesList.innerHTML="";
+  for(var i=0;i<sanList.length;i+=2){
+    var li=document.createElement("li");
+    li.innerHTML="<span>"+sanList[i]+"</span>"+(sanList[i+1]?"<span>"+sanList[i+1]+"</span>":"");
+    movesList.appendChild(li);
+  }
+  var box=document.getElementById("moves");box.scrollTop=box.scrollHeight;
+}
+function resetGame(){
+  state={board:startBoard(),turn:"w",cas:{wK:true,wQ:true,bK:true,bQ:true},ep:null,half:0,full:1};
+  history=[];keys=[posKey(state)];sanList=[];selected=null;legalCache=[];over=false;thinking=false;
+  document.getElementById("endModal").classList.remove("open");
+  render();
+}
+function newGame(){
+  if(live.on){ toast("أنت داخل مباراة أونلاين — استخدم «مباراة جديدة معه» أو انسحب."); return; }
+  resetGame();
+  if(isComputerTurn()) setTimeout(computerMove,350);
+}
+
+/* ---------------- التفاعل ---------------- */
+boardEl.addEventListener("click",function(e){
+  if(over||thinking) return;
+  var sq=e.target.closest(".sq"); if(!sq) return;
+  var r=+sq.dataset.r,c=+sq.dataset.c,h=humanColor();
+  if(h!=="both"&&state.turn!==h){ if(live.on) toast("انتظر دورك"); return; }
+  if(selected){
+    var picks=legalCache.filter(function(m){return m.to[0]===r&&m.to[1]===c;});
+    if(picks.length){
+      if(picks.length>1&&picks[0].promo){askPromotion(picks);return;}
+      doMove(picks[0]);return;
+    }
+  }
+  var p=state.board[r][c];
+  if(p&&colorOf(p)===state.turn){
+    selected=[r,c];
+    legalCache=legalMoves(state,state.turn).filter(function(m){return m.from[0]===r&&m.from[1]===c;});
+  } else { selected=null;legalCache=[]; }
+  updateBoard();
+});
+function askPromotion(picks){
+  var row=document.getElementById("promoRow");row.innerHTML="";
+  ["Q","R","B","N"].forEach(function(t){
+    var b=document.createElement("button");
+    b.textContent=GLYPH[t];b.title=t;
+    b.onclick=function(){
+      document.getElementById("promoModal").classList.remove("open");
+      doMove(picks.filter(function(x){return x.promo===t;})[0]);
+    };
+    row.appendChild(b);
+  });
+  document.getElementById("promoModal").classList.add("open");
+}
+function doMove(m,remote){
+  var all=legalMoves(state,state.turn);
+  var san=toSAN(state,m,all);
+  history.push({state:cloneState(state),move:m,san:san});
+  state=applyMove(state,m);
+  keys.push(posKey(state));
+  var next=legalMoves(state,state.turn);
+  if(!next.length) san+=inCheck(state,state.turn)?"#":" =";
+  else if(inCheck(state,state.turn)) san+="+";
+  sanList.push(san);
+  selected=null;legalCache=[];
+  beep(m.cap?220:330);
+  if(live.on&&!remote) netSendMove(m);
+  render();
+  if(checkEnd()) return;
+  if(isComputerTurn()){thinking=true;render();setTimeout(computerMove,60);}
+}
+function applyRemoteMove(mm){
+  var ms=legalMoves(state,state.turn).filter(function(x){
+    return x.from[0]===mm.f[0]&&x.from[1]===mm.f[1]&&x.to[0]===mm.t[0]&&x.to[1]===mm.t[1]&&
+           (mm.p?x.promo===mm.p:!x.promo);});
+  if(!ms.length){toast("وصلت نقلة غير قانونية وتم تجاهلها");return;}
+  doMove(ms[0],true);
+}
+function computerMove(){
+  if(over){thinking=false;return;}
+  var m=bestMove(state,parseInt(lvlSel.value,10));
+  thinking=false;
+  if(!m){render();checkEnd();return;}
+  doMove(m);
+}
+function repetition(){
+  var last=keys[keys.length-1],n=0;
+  for(var i=0;i<keys.length;i++) if(keys[i]===last) n++;
+  return n>=3;
+}
+function checkEnd(){
+  var ms=legalMoves(state,state.turn);
+  if(!ms.length){
+    if(inCheck(state,state.turn)){
+      var win=enemy(state.turn);
+      finish((win==="w"?"الأبيض":"الأسود")+" يفوز","كش مات. لا توجد نقلة قانونية تنقذ الملك.",win);
+    } else decideByMaterial("جمود (Stalemate): لا توجد نقلة قانونية والملك ليس تحت الكش.");
+    return true;
+  }
+  if(state.half>=100){decideByMaterial("قاعدة الخمسين نقلة: مرّت ٥٠ نقلة بلا أسر وبلا تحريك بيدق.");return true;}
+  if(repetition()){decideByMaterial("تكرار الوضع ثلاث مرات.");return true;}
+  if(insufficient(state.board)){decideByMaterial("المتبقي على الرقعة لا يكفي لإنهاء المباراة بالمات.");return true;}
+  return false;
+}
+function decideByMaterial(reason){
+  var m=material(state.board);
+  if(m.w>m.b) finish("الأبيض يفوز بالقطع","("+reason+") الأبيض يملك "+m.w+" نقطة مقابل "+m.b+" للأسود.","w");
+  else if(m.b>m.w) finish("الأسود يفوز بالقطع","("+reason+") الأسود يملك "+m.b+" نقطة مقابل "+m.w+" للأبيض.","b");
+  else finish("تعادل تام","("+reason+") القطع متساوية تمامًا: "+m.w+" لكل طرف.",null);
+}
+function finish(title,text,winner){
+  over=true;thinking=false;
+  statusText.textContent=title;
+  document.getElementById("endTitle").textContent=title;
+  document.getElementById("endText").textContent=text;
+  document.getElementById("endModal").classList.add("open");
+  render();
+  if(live.on&&!live.ended) netFinish(title,text,winner);
+}
+
+/* ---------------- الأزرار ---------------- */
+document.getElementById("btnNew").onclick=newGame;
+document.getElementById("endNew").onclick=function(){
+  document.getElementById("endModal").classList.remove("open");
+  if(live.on) rematch(); else newGame();
+};
+document.getElementById("endClose").onclick=function(){document.getElementById("endModal").classList.remove("open");};
+document.getElementById("btnFlip").onclick=function(){flipped=!flipped;layoutBoard();updateBoard();};
+document.getElementById("btnUndo").onclick=function(){
+  if(thinking) return;
+  if(live.on){toast("التراجع غير متاح في المباريات الأونلاين");return;}
+  var steps=(humanColor()!=="both"&&history.length>1)?2:1;
+  for(var i=0;i<steps;i++){ if(!history.length) break;
+    state=history.pop().state;keys.pop();sanList.pop();}
+  over=false;selected=null;legalCache=[];
+  document.getElementById("endModal").classList.remove("open");
+  render();
+};
+document.getElementById("btnPoints").onclick=function(){
+  if(over) return;
+  if(live.on){toast("هذا الزر للمباريات المحلية فقط");return;}
+  decideByMaterial("تم إنهاء المباراة يدويًا واحتساب النتيجة بقيمة القطع.");
+};
+modeSel.onchange=function(){
+  if(live.on){toast("أنت داخل مباراة أونلاين");modeSel.value="hvh";return;}
+  resetGame(); if(isComputerTurn()) setTimeout(computerMove,350);
+};
+lvlSel.onchange=function(){ if(isComputerTurn()&&!over){thinking=true;render();setTimeout(computerMove,60);} };
+
+/* ---------------- صوت وتنبيه ---------------- */
+var actx=null;
+function beep(f){
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.frequency.value=f;o.type="triangle";o.connect(g);g.connect(actx.destination);
+    g.gain.setValueAtTime(.08,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+.14);
+    o.start();o.stop(actx.currentTime+.15);
+  }catch(e){}
+}
+var toastEl=document.getElementById("toast"),toastT=null;
+function toast(msg){
+  toastEl.textContent=msg;toastEl.classList.add("show");
+  clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove("show");},3000);
+}
+
+/* =========================================================
+   Firebase: حساب جوجل + أصدقاء + مباريات
+   ========================================================= */
+var FB={on:false,app:null,auth:null,db:null,A:null,D:null,uid:null,me:null,offs:[]};
+var elSignedIn=document.getElementById("signedIn"),elSignedOut=document.getElementById("signedOut");
+var friendsPanel=document.getElementById("friendsPanel"),invitePanel=document.getElementById("invitePanel");
+var livePanel=document.getElementById("livePanel");
+var linkInvitePanel=document.getElementById("linkInvitePanel");
+var connBanner=document.getElementById("connBanner");
+var pendingJoinGid=(function(){
+  try{ return new URLSearchParams(location.search).get("game")||null; }catch(e){ return null; }
+})();
+
+function notice(html){
+  var n=document.getElementById("cfgNotice");
+  n.innerHTML=html;n.style.display="block";
+}
+function esc(s){return String(s).replace(/[.#$\[\]\/]/g,",").toLowerCase();}
+function safe(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function makeCode(uid){
+  var h=0;
+  for(var i=0;i<uid.length;i++) h=(h*31+uid.charCodeAt(i))>>>0;
+  var A="ABCDEFGHJKLMNPQRSTUVWXYZ23456789",s="";
+  for(var k=0;k<6;k++){ s+=A.charAt(h%32); h=Math.floor(h/32)+13; }
+  return s;
+}
+
+function initFirebase(){
+  if(!FIREBASE_CONFIG.apiKey||!FIREBASE_CONFIG.databaseURL){
+    notice("لتفعيل الحسابات والأصدقاء: الصق بيانات مشروع Firebase في المتغير <code>FIREBASE_CONFIG</code> أعلى سكربت الصفحة. الخطوات في البطاقة المجاورة. بقية الموقع (اللعب المحلي وضد الحاسوب) يعمل الآن بدون أي إعداد.");
+    document.getElementById("btnGoogle").disabled=true;
+    return;
+  }
+  Promise.all([
+    import("https://www.gstatic.com/firebasejs/"+FB_VER+"/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/"+FB_VER+"/firebase-auth.js"),
+    import("https://www.gstatic.com/firebasejs/"+FB_VER+"/firebase-database.js")
+  ]).then(function(mods){
+    var App=mods[0],A=mods[1],D=mods[2];
+    FB.app=App.initializeApp(FIREBASE_CONFIG);
+    FB.auth=A.getAuth(FB.app);
+    FB.db=D.getDatabase(FB.app);
+    FB.A=A;FB.D=D;FB.on=true;
+    A.onAuthStateChanged(FB.auth,function(user){ user?onSignedIn(user):onSignedOut(); });
+    A.getRedirectResult(FB.auth).catch(function(){});
+    D.onValue(D.ref(FB.db,".info/connected"),function(snap){
+      if(snap.val()===true){
+        if(connBanner.classList.contains("show")&&connBanner.dataset.was==="off") toast("تم الاتصال");
+        connBanner.classList.remove("show");connBanner.dataset.was="on";
+      } else {
+        if(FB.uid){ connBanner.textContent="جاري إعادة الاتصال…";connBanner.classList.add("show");connBanner.dataset.was="off"; }
+      }
+    });
+  }).catch(function(){
+    notice("تعذّر تحميل مكتبة Firebase. تأكد من الاتصال بالإنترنت ومن صحة رقم الإصدار في <code>FB_VER</code>.");
+    document.getElementById("btnGoogle").disabled=true;
+  });
+}
+document.getElementById("btnGoogle").onclick=function(){
+  if(!FB.on) return;
+  var p=new FB.A.GoogleAuthProvider();
+  FB.A.signInWithPopup(FB.auth,p).catch(function(err){
+    if(err&&(err.code==="auth/popup-blocked"||err.code==="auth/operation-not-supported-in-this-environment"))
+      FB.A.signInWithRedirect(FB.auth,p);
+    else toast("تعذّر تسجيل الدخول: "+(err&&err.code?err.code:"خطأ غير معروف"));
+  });
+};
+document.getElementById("btnSignOut").onclick=function(){
+  if(!FB.on) return;
+  if(live.on) leaveLive();
+  var r=FB.D.ref(FB.db,"users/"+FB.uid);
+  FB.D.update(r,{online:false,last:FB.D.serverTimestamp()}).catch(function(){});
+  FB.A.signOut(FB.auth);
+};
+
+function clearOffs(){ FB.offs.forEach(function(f){try{f();}catch(e){}}); FB.offs=[]; }
+
+function onSignedOut(){
+  clearOffs();
+  FB.uid=null;FB.me=null;
+  elSignedIn.style.display="none";elSignedOut.style.display="block";
+  friendsPanel.style.display="none";invitePanel.style.display="none";linkInvitePanel.style.display="none";
+  document.getElementById("headUser").style.display="none";
+  document.getElementById("headCta").textContent="سجّل الدخول";
+  if(live.on) leaveLive();
+  if(pendingJoinGid){
+    notice("هذا الرابط يفتح مباراة أونلاين محدَّدة. سجّل الدخول بحساب جوجل أولًا ثم ستدخل المباراة تلقائيًا.");
+    document.getElementById("account").scrollIntoView({behavior:"smooth"});
+  }
+}
+function onSignedIn(user){
+  var D=FB.D,db=FB.db;
+  FB.uid=user.uid;
+  var code=makeCode(user.uid);
+  FB.me={uid:user.uid,name:user.displayName||"لاعب",email:user.email||"",photo:user.photoURL||"",code:code};
+
+  D.update(D.ref(db,"users/"+user.uid),{
+    name:FB.me.name,email:FB.me.email,photo:FB.me.photo,code:code,
+    online:true,last:D.serverTimestamp()
+  }).catch(function(){toast("تعذّر حفظ بياناتك — راجع قواعد قاعدة البيانات");});
+  D.set(D.ref(db,"codes/"+code),user.uid).catch(function(){});
+  if(FB.me.email) D.set(D.ref(db,"emails/"+esc(FB.me.email)),user.uid).catch(function(){});
+  D.onDisconnect(D.ref(db,"users/"+user.uid)).update({online:false,last:D.serverTimestamp()});
+
+  elSignedOut.style.display="none";elSignedIn.style.display="block";
+  friendsPanel.style.display="block";invitePanel.style.display="block";
+  document.getElementById("myAvatar").src=FB.me.photo||"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'/%3E";
+  document.getElementById("myName").textContent=FB.me.name;
+  document.getElementById("myEmail").textContent=FB.me.email;
+  document.getElementById("myCode").textContent=code;
+  var hu=document.getElementById("headUser");
+  hu.style.display="flex";
+  document.getElementById("headAvatar").src=FB.me.photo;
+  document.getElementById("headName").textContent=FB.me.name.split(" ")[0];
+  document.getElementById("headCta").textContent="حسابي";
+
+  FB.offs.push(D.onValue(D.ref(db,"users/"+user.uid+"/stats"),function(snap){
+    var st=snap.val()||{};
+    document.getElementById("stW").textContent=st.w||0;
+    document.getElementById("stL").textContent=st.l||0;
+    document.getElementById("stD").textContent=st.d||0;
+  }));
+  watchRequests();watchFriends();watchInvites();
+  linkInvitePanel.style.display="block";
+  if(pendingJoinGid){ var g=pendingJoinGid; pendingJoinGid=null; joinByLink(g); }
+}
+
+document.getElementById("btnCopyCode").onclick=function(){
+  var c=document.getElementById("myCode").textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(c).then(function(){toast("تم نسخ الكود");},function(){toast("انسخه يدويًا: "+c);});
+  else toast("كودك: "+c);
+};
+
+/* ---- إضافة صديق ---- */
+document.getElementById("btnAdd").onclick=function(){
+  var D=FB.D,db=FB.db,v=(document.getElementById("addInput").value||"").trim();
+  if(!v||!FB.uid) return;
+  var path=(v.indexOf("@")>-1)?("emails/"+esc(v)):("codes/"+v.toUpperCase());
+  D.get(D.ref(db,path)).then(function(sn){
+    var uid=sn.val();
+    if(!uid){toast("لا يوجد لاعب بهذا الكود أو الإيميل");return;}
+    if(uid===FB.uid){toast("هذا أنت 🙂");return;}
+    return D.get(D.ref(db,"friends/"+FB.uid+"/"+uid)).then(function(f){
+      if(f.exists()){toast("هو بالفعل في قائمة أصدقائك");return;}
+      return D.set(D.ref(db,"requests/"+uid+"/"+FB.uid),{
+        name:FB.me.name,photo:FB.me.photo,ts:D.serverTimestamp()
+      }).then(function(){
+        document.getElementById("addInput").value="";
+        toast("تم إرسال طلب الصداقة");
+      });
+    });
+  }).catch(function(){toast("تعذّر إرسال الطلب");});
+};
+function watchRequests(){
+  var D=FB.D,db=FB.db,ul=document.getElementById("reqList"),empty=document.getElementById("reqEmpty");
+  FB.offs.push(D.onValue(D.ref(db,"requests/"+FB.uid),function(snap){
+    var v=snap.val()||{},ids=Object.keys(v);
+    ul.innerHTML="";empty.style.display=ids.length?"none":"block";
+    ids.forEach(function(from){
+      var r=v[from]||{};
+      var li=document.createElement("li");
+      li.innerHTML='<img src="'+safe(r.photo||"")+'" alt=""><span class="nm">'+safe(r.name||"لاعب")+'<small>يريد إضافتك صديقًا</small></span>';
+      var ok=document.createElement("button");ok.className="btn btn-gold btn-sm";ok.textContent="قبول";
+      var no=document.createElement("button");no.className="btn btn-ghost btn-sm";no.textContent="رفض";
+      ok.onclick=function(){
+        Promise.all([
+          D.set(D.ref(db,"friends/"+FB.uid+"/"+from),true),
+          D.set(D.ref(db,"friends/"+from+"/"+FB.uid),true)
+        ]).then(function(){return D.remove(D.ref(db,"requests/"+FB.uid+"/"+from));})
+         .then(function(){toast("تمت إضافة الصديق");})
+         .catch(function(){toast("تعذّر قبول الطلب");});
+      };
+      no.onclick=function(){D.remove(D.ref(db,"requests/"+FB.uid+"/"+from));};
+      li.appendChild(ok);li.appendChild(no);
+      ul.appendChild(li);
+    });
+  }));
+}
+function watchFriends(){
+  var D=FB.D,db=FB.db,ul=document.getElementById("frList"),empty=document.getElementById("frEmpty");
+  var perFriend=[];
+  FB.offs.push(D.onValue(D.ref(db,"friends/"+FB.uid),function(snap){
+    perFriend.forEach(function(f){try{f();}catch(e){}});perFriend=[];
+    var v=snap.val()||{},ids=Object.keys(v);
+    ul.innerHTML="";empty.style.display=ids.length?"none":"block";
+    ids.forEach(function(fid){
+      var li=document.createElement("li");
+      li.innerHTML='<span class="dot"></span><img alt=""><span class="nm">…</span>';
+      var play=document.createElement("button");
+      play.className="btn btn-gold btn-sm";play.textContent="العب";
+      li.appendChild(play);
+      ul.appendChild(li);
+      var off=D.onValue(D.ref(db,"users/"+fid),function(s){
+        var u=s.val()||{};
+        li.querySelector(".dot").className="dot"+(u.online?" on":"");
+        li.querySelector("img").src=u.photo||"";
+        li.querySelector(".nm").innerHTML=safe(u.name||"لاعب")+'<small>'+(u.online?"متصل الآن":"غير متصل")+"</small>";
+        play.onclick=function(){ invite(fid,u.name||"لاعب"); };
+      });
+      perFriend.push(off);
+    });
+  }));
+  FB.offs.push(function(){perFriend.forEach(function(f){try{f();}catch(e){}});});
+}
+
+/* ---- روابط الدعوة المباشرة (بدون الحاجة لصداقة مسبقة) ---- */
+function gameUrl(gid){
+  var u=new URL(location.href);
+  u.search="";u.hash="";
+  u.searchParams.set("game",gid);
+  return u.toString();
+}
+function setUrlGame(gid){
+  try{ history.replaceState(null,"",gameUrl(gid)); }catch(e){}
+}
+function clearUrlGame(){
+  try{
+    var u=new URL(location.href);
+    u.searchParams.delete("game");
+    history.replaceState(null,"",u.toString());
+  }catch(e){}
+}
+var linkWait={gid:null,off:null};
+function cancelLinkWait(){
+  if(linkWait.off){try{linkWait.off();}catch(e){}}
+  linkWait={gid:null,off:null};
+  document.getElementById("linkWaitBox").style.display="none";
+  clearUrlGame();
+}
+document.getElementById("btnCreateLinkGame").onclick=function(){
+  var D=FB.D,db=FB.db;
+  if(!FB.uid) return;
+  if(live.on){toast("أنهِ مباراتك الحالية أولًا");return;}
+  if(linkWait.gid){toast("لديك بالفعل رابط دعوة بانتظار خصم — ألغِه أولًا إن أردت رابطًا جديدًا");return;}
+  var gref=D.push(D.ref(db,"games"));
+  var gid=gref.key;
+  D.set(gref,{w:FB.uid,b:null,wn:FB.me.name,bn:null,status:"waiting-link",created:D.serverTimestamp()})
+   .then(function(){
+     linkWait.gid=gid;
+     setUrlGame(gid);
+     document.getElementById("linkWaitCode").textContent=gameUrl(gid);
+     document.getElementById("linkWaitBox").style.display="block";
+     linkWait.off=D.onValue(D.ref(db,"games/"+gid+"/status"),function(s){
+       if(s.val()==="active"){
+         D.get(D.ref(db,"games/"+gid+"/bn")).then(function(sn){
+           document.getElementById("linkWaitBox").style.display="none";
+           joinLive(gid,"w",sn.val()||"الخصم",null);
+         });
+       }
+     });
+     FB.offs.push(linkWait.off);
+   }).catch(function(){toast("تعذّر إنشاء رابط الدعوة");});
+};
+document.getElementById("btnCopyWaitLink").onclick=function(){
+  var l=document.getElementById("linkWaitCode").textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(l).then(function(){toast("تم نسخ رابط المباراة");},function(){toast("انسخه يدويًا: "+l);});
+  else toast("انسخه يدويًا: "+l);
+};
+document.getElementById("btnShareWaitLink").onclick=function(){
+  var l=document.getElementById("linkWaitCode").textContent;
+  if(navigator.share) navigator.share({title:"Chess for My Mary",text:"العب معايا شطرنج أونلاين:",url:l}).catch(function(){});
+  else { if(navigator.clipboard) navigator.clipboard.writeText(l); toast("تم نسخ الرابط — ابعته لصاحبك"); }
+};
+document.getElementById("btnCancelWaitLink").onclick=function(){
+  var D=FB.D,db=FB.db,gid=linkWait.gid;
+  cancelLinkWait();
+  if(gid) D.remove(D.ref(db,"games/"+gid)).catch(function(){});
+};
+document.getElementById("btnCopyGameLink").onclick=function(){
+  if(!live.on||!live.gid){toast("لا توجد مباراة جارية");return;}
+  var l=gameUrl(live.gid);
+  if(navigator.clipboard) navigator.clipboard.writeText(l).then(function(){toast("تم نسخ رابط المباراة");},function(){toast("انسخه يدويًا: "+l);});
+  else toast("انسخه يدويًا: "+l);
+};
+function joinByLink(gid){
+  var D=FB.D,db=FB.db;
+  if(!FB.on||!FB.uid) return;
+  if(live.on&&live.gid===gid) return;
+  if(live.on){toast("أنهِ مباراتك الحالية أولًا قبل فتح رابط مباراة أخرى");return;}
+  D.get(D.ref(db,"games/"+gid)).then(function(sn){
+    var g=sn.val();
+    if(!g){toast("المباراة غير موجودة أو انتهت.");clearUrlGame();return;}
+    if(g.w===FB.uid&&!g.b){
+      // صاحب الرابط عمل Refresh وهو لسه مستني الخصم
+      linkWait.gid=gid;
+      document.getElementById("linkWaitCode").textContent=gameUrl(gid);
+      document.getElementById("linkWaitBox").style.display="block";
+      linkWait.off=D.onValue(D.ref(db,"games/"+gid+"/status"),function(s){
+        if(s.val()==="active"){
+          D.get(D.ref(db,"games/"+gid+"/bn")).then(function(sn2){
+            document.getElementById("linkWaitBox").style.display="none";
+            joinLive(gid,"w",sn2.val()||"الخصم",null);
+          });
+        }
+      });
+      FB.offs.push(linkWait.off);
+      return;
+    }
+    if(g.w===FB.uid){ joinLive(gid,"w",g.bn||"الخصم",g.b||null); return; }
+    if(g.b===FB.uid){ joinLive(gid,"b",g.wn||"الخصم",g.w||null); return; }
+    if(g.b){ toast("هذه المباراة ممتلئة بالفعل.");clearUrlGame();return; }
+    // مقعد الأسود شاغر: نحاول أخذه بأمان عبر transaction لمنع تعارض دخول شخصين معًا
+    D.runTransaction(D.ref(db,"games/"+gid+"/b"),function(cur){
+      if(cur===null||cur===undefined) return FB.uid;
+      return; // ألغِ العملية، المقعد أُخذ للتو
+    }).then(function(res){
+      if(!res.committed){ toast("سبقك أحد إلى هذه المباراة.");clearUrlGame();return; }
+      return D.update(D.ref(db,"games/"+gid),{bn:FB.me.name,status:"active"}).then(function(){
+        joinLive(gid,"b",g.wn||"الخصم",g.w);
+      });
+    }).catch(function(){toast("تعذّر الانضمام إلى المباراة.");});
+  }).catch(function(){toast("تعذّر تحميل المباراة.");});
+}
+
+/* ---- الدعوات والمباريات ---- */
+function invite(fid,fname){
+  var D=FB.D,db=FB.db;
+  if(live.on){toast("أنهِ مباراتك الحالية أولًا");return;}
+  var gref=D.push(D.ref(db,"games"));
+  var gid=gref.key;
+  D.set(gref,{
+    w:FB.uid,b:fid,wn:FB.me.name,bn:fname,
+    status:"waiting",created:D.serverTimestamp()
+  }).then(function(){
+    return D.set(D.ref(db,"invites/"+fid+"/"+gid),{from:FB.uid,fromName:FB.me.name,ts:D.serverTimestamp()});
+  }).then(function(){
+    toast("تم إرسال الدعوة، بانتظار قبوله");
+    var off=D.onValue(D.ref(db,"games/"+gid+"/status"),function(s){
+      if(s.val()==="active"){ off(); joinLive(gid,"w",fname,fid); }
+    });
+    FB.offs.push(off);
+  }).catch(function(){toast("تعذّر إنشاء المباراة");});
+}
+function watchInvites(){
+  var D=FB.D,db=FB.db,ul=document.getElementById("inviteList");
+  FB.offs.push(D.onValue(D.ref(db,"invites/"+FB.uid),function(snap){
+    var v=snap.val()||{},ids=Object.keys(v);
+    ul.innerHTML="";
+    if(!ids.length){ ul.innerHTML='<li style="border:none"><span class="empty">لا توجد دعوات حاليًا.</span></li>'; return; }
+    ids.forEach(function(gid){
+      var inv=v[gid]||{};
+      var li=document.createElement("li");
+      li.innerHTML='<span class="nm">'+safe(inv.fromName||"لاعب")+'<small>يدعوك لمباراة</small></span>';
+      var ok=document.createElement("button");ok.className="btn btn-gold btn-sm";ok.textContent="العب";
+      var no=document.createElement("button");no.className="btn btn-ghost btn-sm";no.textContent="رفض";
+      ok.onclick=function(){
+        if(live.on){toast("أنهِ مباراتك الحالية أولًا");return;}
+        D.update(D.ref(db,"games/"+gid),{status:"active"})
+         .then(function(){return D.remove(D.ref(db,"invites/"+FB.uid+"/"+gid));})
+         .then(function(){ joinLive(gid,"b",inv.fromName||"لاعب",inv.from); })
+         .catch(function(){toast("تعذّر بدء المباراة");});
+      };
+      no.onclick=function(){D.remove(D.ref(db,"invites/"+FB.uid+"/"+gid));};
+      li.appendChild(ok);li.appendChild(no);
+      ul.appendChild(li);
+    });
+  }));
+}
+function joinLive(gid,color,oppName,oppUid){
+  var D=FB.D,db=FB.db;
+  if(linkWait.gid===gid) cancelLinkWait();
+  live={on:true,gid:gid,color:color,opp:oppUid,oppName:oppName,applied:0,offs:[],ended:false};
+  flipped=(color==="b");layoutBoard();
+  resetGame();
+  setUrlGame(gid);
+  livePanel.style.display="block";
+  document.getElementById("oppName").innerHTML=safe(oppName)+"<small>خصمك في هذه المباراة</small>";
+  live.offs.push(D.onChildAdded(D.ref(db,"games/"+gid+"/moves"),function(s){
+    live.applied++;
+    if(live.applied<=sanList.length) return;
+    var mv=s.val(); if(mv&&mv.f&&mv.t) applyRemoteMove(mv);
+  }));
+  live.offs.push(D.onValue(D.ref(db,"games/"+gid+"/result"),function(s){
+    var res=s.val();
+    if(res&&!over){
+      live.ended=true;
+      finish(res.title||"انتهت المباراة",res.text||"",res.winner||null);
+    }
+  }));
+  render();
+  toast("بدأت المباراة — أنت "+(color==="w"?"الأبيض":"الأسود"));
+  document.getElementById("play").scrollIntoView({behavior:"smooth"});
+}
+function netSendMove(m){
+  var D=FB.D,db=FB.db;
+  D.push(D.ref(db,"games/"+live.gid+"/moves"),{f:m.from,t:m.to,p:m.promo||null})
+   .catch(function(){toast("تعذّر إرسال النقلة — تحقق من اتصالك");});
+}
+function netFinish(title,text,winner){
+  var D=FB.D,db=FB.db;
+  live.ended=true;
+  D.update(D.ref(db,"games/"+live.gid),{status:"over",result:{title:title,text:text,winner:winner||null}}).catch(function(){});
+  var key = (winner===null||winner===undefined) ? "d" : (winner===live.color?"w":"l");
+  D.runTransaction(D.ref(db,"users/"+FB.uid+"/stats/"+key),function(cur){return (cur||0)+1;}).catch(function(){});
+}
+function leaveLive(){
+  live.offs.forEach(function(f){try{f();}catch(e){}});
+  live={on:false,gid:null,color:null,opp:null,oppName:"",applied:0,offs:[],ended:false};
+  livePanel.style.display="none";
+  clearUrlGame();
+  render();
+}
+document.getElementById("btnResign").onclick=function(){
+  if(!live.on||over) return;
+  var win=enemy(live.color);
+  finish((win==="w"?"الأبيض":"الأسود")+" يفوز","انسحاب "+(live.color==="w"?"الأبيض":"الأسود")+" من المباراة.",win);
+};
+function rematch(){
+  if(!live.on) return;
+  var opp=live.opp,name=live.oppName;
+  leaveLive();
+  invite(opp,name);
+}
+document.getElementById("btnRematch").onclick=rematch;
+
+/* ---------------- الهيرو والهيدر والشات ---------------- */
+(function heroArt(){
+  var art=document.getElementById("heroArt");
+  var layout=[
+    ["bR","bN","bB","bQ","bK","bB","bN","bR"],
+    ["bP","bP","bP",null,"bP","bP","bP","bP"],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,"bP",null,null,null,null],
+    [null,null,null,null,"wP",null,null,null],
+    [null,null,"wN",null,null,null,null,null],
+    ["wP","wP","wP","wP",null,"wP","wP","wP"],
+    ["wR",null,"wB","wQ","wK","wB","wN","wR"]
+  ];
+  for(var r=0;r<8;r++)for(var c=0;c<8;c++){
+    var i=document.createElement("i");
+    i.className=((r+c)%2?"d":"");
+    var p=layout[r][c];
+    if(p){i.textContent=GLYPH[typeOf(p)];i.className+=" "+(colorOf(p)==="w"?"w-p":"b-p");}
+    art.appendChild(i);
+  }
+})();
+var burger=document.getElementById("burger"),nav=document.getElementById("nav");
+burger.onclick=function(){
+  var open=nav.classList.toggle("open");
+  burger.setAttribute("aria-expanded",open?"true":"false");
+};
+nav.addEventListener("click",function(e){if(e.target.tagName==="A") nav.classList.remove("open");});
+document.getElementById("yr").textContent=new Date().getFullYear();
+
+var waLink="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent("السلام عليكم، جايلكم من موقع Chess for My Mary وعايز أستفسر عن...");
+document.getElementById("waBtn").href=waLink;
+var waFoot=document.getElementById("waFoot");waFoot.href=waLink;waFoot.textContent="واتساب: "+WA_NUMBER;
+
+var chatBox=document.getElementById("chatBox"),chatBody=document.getElementById("chatBody");
+document.getElementById("chatFab").onclick=function(){
+  chatBox.classList.toggle("open");
+  if(chatBox.classList.contains("open")&&!chatBody.children.length)
+    bot("أهلًا بك في Chess for My Mary. اسألني عن التسجيل بجوجل، إضافة الأصدقاء، أو أي قاعدة في اللعب.");
+};
+document.getElementById("chatClose").onclick=function(){chatBox.classList.remove("open");};
+function bubble(text,who){
+  var d=document.createElement("div");d.className="msg "+who;d.textContent=text;
+  chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight;
+}
+function bot(t){setTimeout(function(){bubble(t,"bot");},280);}
+var KB=[
+  {k:["تسجيل","دخول","جوجل","حساب","login"],a:"اضغط «متابعة بحساب جوجل» في قسم «حسابي والأصدقاء». يظهر اسمك وصورتك وإيميلك وكود صداقة خاص بك وسجل نتائجك."},
+  {k:["صديق","اصدقاء","أصدقاء","اضافه","إضافة","كود"],a:"انسخ كود الصداقة من حسابك وابعته لصاحبك، أو أدخل أنت كوده أو إيميله في خانة «إضافة صديق». يصله طلب، وبقبوله تظهرون في قائمة بعض مع حالة الاتصال."},
+  {k:["العب معه","دعوة","دعوه","مباراة اونلاين","اونلاين","أونلاين"],a:"من قائمة أصدقائك اضغط «العب» بجانب اسم صاحبك. تصله دعوة في قسم «دعوات واردة»، وبقبولها تبدأ المباراة فورًا وتنتقل النقلات بين الجهازين لحظيًا."},
+  {k:["firebase","خادم","سيرفر","قاعدة بيانات","اعداد","إعداد"],a:"الحسابات تحتاج مشروع Firebase مجاني: أنشئ مشروعًا، فعّل Google في Authentication، أنشئ Realtime Database، والصق firebaseConfig في متغير FIREBASE_CONFIG أعلى الكود، ثم الصق قواعد الأمان الموجودة في بطاقة «إعداد الخادم»."},
+  {k:["تبييت","قلعة","castle"],a:"التبييت مسموح فقط إذا لم يتحرك الملك ولا الرخ، والمربعات بينهما فارغة، والملك ليس تحت كش ولا يمر بمربع مهدَّد."},
+  {k:["مرور","passant"],a:"الأخذ بالمرور يتم في النقلة التالية مباشرة لدفعة البيدق المزدوجة فقط."},
+  {k:["ترقي","ترقية","promotion"],a:"عند وصول بيدقك للصف الأخير تختار: وزير، رخ، فيل، أو حصان."},
+  {k:["مات","كش"],a:"مربع الملك يتلوّن بالأحمر عند الكش، وإذا لم تبقَ نقلة قانونية فهو كش مات."},
+  {k:["نقاط","قطع اكثر","قطع أكثر","تعادل","جمود"],a:"عند الجمود أو التكرار أو الخمسين نقلة يفوز صاحب القطع الأعلى قيمة (بيدق ١، حصان/فيل ٣، رخ ٥، وزير ٩)."},
+  {k:["تراجع","undo"],a:"التراجع متاح في اللعب المحلي وضد الحاسوب فقط، ومقفول في المباريات الأونلاين حتى لا يتلاعب أحد."},
+  {k:["انسحاب","استسلام"],a:"داخل المباراة الأونلاين يظهر زر «انسحاب» في بطاقة المباراة الجارية، ويُحتسب فوزًا لخصمك."}
+];
+function answer(q){
+  var t=q.toLowerCase();
+  for(var i=0;i<KB.length;i++)
+    for(var j=0;j<KB[i].k.length;j++)
+      if(t.indexOf(KB[i].k[j])>-1) return KB[i].a;
+  return "لم أفهم سؤالك تمامًا. جرّب: تسجيل الدخول، إضافة صديق، دعوة للعب، إعداد Firebase، تبييت، ترقية، كش مات.";
+}
+var chipsEl=document.getElementById("chips");
+["إزاي أسجل دخول؟","إزاي أضيف صديق؟","إزاي ألعب مع صاحبي؟","يعني إيه الفوز بالقطع؟"].forEach(function(c){
+  var b=document.createElement("button");b.type="button";b.textContent=c;
+  b.onclick=function(){bubble(c,"me");bot(answer(c));};
+  chipsEl.appendChild(b);
+});
+document.getElementById("chatForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var inp=document.getElementById("chatInput"),v=inp.value.trim();
+  if(!v)return;
+  bubble(v,"me");inp.value="";bot(answer(v));
+});
+
+/* ---------------- تشغيل ---------------- */
+buildBoard();
+resetGame();
+initFirebase();
+})();
+</script>
+</body>
+</html>
